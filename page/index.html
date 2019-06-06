@@ -5,6 +5,7 @@
   <title>个人博客</title>
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/index.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
   <header class="header">
@@ -24,21 +25,16 @@
   </header>
   <div class="content">
     <div class="content_left">
-      <div class="every_day">
+      <div class="every_day" id="every_day">
         <span>每日一句</span>
-        <p>You must strive to find your own voice. Because the longer you wait to begin, the less likely you are to find it at all</p>
+        <p v-html="getContent"></p>
         <p>你们必须努力寻找自己的声音，因为你越迟开始寻找,找到的可能性就越小 -----余云超</p>
       </div>
-      <div class="article_list">
-        <div class="article">
-          <a href="/" class="article_title">every day</a>
-          <p class="article_content">Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. </p>
-          <div class="article_foot">发布于2018-10-31 | 浏览(327) | Tags：CSS、NOde、Vue</div>
-        </div>
-        <div class="article">
-          <a href="/" class="article_title">every day</a>
-          <p class="article_content">Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. Our destiny offers not the cup of despair, but the chalice of opportunity. So let us seize it, not in fear, but in gladness. </p>
-          <div class="article_foot">发布于2018-10-31 | 浏览(327) | Tags：CSS、NOde、Vue</div>
+      <div class="article_list" id="article_list">
+        <div class="article" v-for="article in articleList">
+          <a v-bind:href="article.link" class="article_title">{{article.title}}</a>
+          <p class="article_content">{{article.content}}</p>
+          <div class="article_foot">发布于{{article.date}} |  浏览({{article.views}}) | Tags：{{article.tags}}</div>
         </div>
         <div class="page_tool">
           <ul>
@@ -53,52 +49,25 @@
     <div class="content_right">
       <div class="right_moodule" id="random_tags">
         <div>随机标签云</div>
-        <a href="/">css</a>
-        <a href="/">html</a>
-        <a href="/">Node</a>
-        <a href="/">Vue</a>
-        <a href="/">webpack</a>
+        <a v-for="tag in tags" v-bind:style="{color:randomColor(), fontSize:randomSize()}">{{tag}}</a>
       </div>
       <div class="right_moodule" id="new_hot">
         <div>最近热门</div>
         <ul>
-          <li>
-            <a href="/">你们必须努力寻找自己的声音</a>
-          </li>
-          <li>
-            <a href="/">你们必须努力寻找自己的声音</a>
-          </li>
-          <li>
-            <a href="/">你们必须努力寻找自己的声音</a>
-          </li>
-          <li>
-            <a href="/">你们必须努力寻找自己的声音</a>
+          <li v-for="title in titleList">
+            <a v-bind:href="title.link">{{title.title}}</a>
           </li>
         </ul>
       </div>
       <div class="right_moodule" id="new_comments">
         <div>最新评论</div>
         <ul>
-          <li>
+          <li v-for="comment in commentList">
             <div>
-              <span>这里是用户名</span>
-              <span class="pull_right">这里是时间</span>
+              <span>{{comment.name}}</span>
+              <span class="pull_right">{{comment.date}}</span>
             </div>
-            <p>抱歉、因为种种原因，不能实现外部站点链接</p>
-          </li>
-          <li>
-            <div>
-              <span>这里是用户名</span>
-              <span class="pull_right">这里是时间</span>
-            </div>
-            <p>抱歉、因为种种原因，不能实现外部站点链接</p>
-          </li>
-          <li>
-            <div>
-              <span>这里是用户名</span>
-              <span class="pull_right">这里是时间</span>
-            </div>
-            <p>抱歉、因为种种原因，不能实现外部站点链接</p>
+            <p>{{comment.comment}}</p>
           </li>
         </ul>
       </div>
@@ -127,4 +96,6 @@
     <p>Copyright © 2010-2017 版权所有</p>
   </footer>
 </body>
+<script src="./js/index.js"></script>
+<script src="./js/base.js"></script>
 </html>
