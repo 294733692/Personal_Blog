@@ -10,7 +10,7 @@ app.post("/editEveryDay", loader.get("/editEveryDay"))
 app.get("/queryEveryDay", loader.get("/queryEveryDay"))
 
 app.post("/editBlog", loader.get("/editBlog"))
-// app.get("/queryEveryDay", loader.get("/queryEveryDay"))
+app.get("/queryBlogByPage", loader.get("/queryBlogByPage"))
 
 app.listen(globalConfig.port, function () {
   console.log("服务已启动");

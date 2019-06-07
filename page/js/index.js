@@ -13,9 +13,9 @@ var everyDay = new Vue({
     axios({
       methods: "get",
       url: "/queryEveryDay"
-    }).then(function(res) {
+    }).then(function (res) {
       everyDay.content = res.data.data[0].content
-    }).catch(function(error){
+    }).catch(function (error) {
       console.log("请求失败");
     })
   }
@@ -29,7 +29,8 @@ var articleList = new Vue({
     count: 100,
     pageNumList: [],
     articleList: [
-      {   title: "四联杀幽门螺杆菌第三天",
+      {
+        title: "四联杀幽门螺杆菌第三天",
         content: "前段时间总是干呕嗳气，吃饭很容易饱，饭后恶心想吐，喝咖啡后更剧烈。首次医院门诊，医生说是可能是胃动力不足消化不良，给开了点儿中成药，没要。问医生是否可以做一下钡餐或胃镜检查一下，于是预约了第二天的胃镜。第一次做胃镜，很顺利。胃镜报告显示胃角C2慢性萎缩性胃炎。几天后活检的病理结果显示慢性萎缩性胃炎，中度萎缩，中度炎症，中度活动，中度肠上皮化生，HP++……好...",
         date: "2018-10-10",
         views: "101",
@@ -37,28 +38,36 @@ var articleList = new Vue({
         id: "1",
         link: "www.baidu.com"
       },
-      {   title: "四联杀幽门螺杆菌第三天",
-        content: "前段时间总是干呕嗳气，吃饭很容易饱，饭后恶心想吐，喝咖啡后更剧烈。首次医院门诊，医生说是可能是胃动力不足消化不良，给开了点儿中成药，没要。问医生是否可以做一下钡餐或胃镜检查一下，于是预约了第二天的胃镜。第一次做胃镜，很顺利。胃镜报告显示胃角C2慢性萎缩性胃炎。几天后活检的病理结果显示慢性萎缩性胃炎，中度萎缩，中度炎症，中度活动，中度肠上皮化生，HP++……好...",
-        date: "2018-10-10",
-        views: "101",
-        tags: "test1 test2",
-        id: "1",
-        link: "www.baidu.com"
-      },
-      {   title: "四联杀幽门螺杆菌第三天",
-        content: "前段时间总是干呕嗳气，吃饭很容易饱，饭后恶心想吐，喝咖啡后更剧烈。首次医院门诊，医生说是可能是胃动力不足消化不良，给开了点儿中成药，没要。问医生是否可以做一下钡餐或胃镜检查一下，于是预约了第二天的胃镜。第一次做胃镜，很顺利。胃镜报告显示胃角C2慢性萎缩性胃炎。几天后活检的病理结果显示慢性萎缩性胃炎，中度萎缩，中度炎症，中度活动，中度肠上皮化生，HP++……好...",
-        date: "2018-10-10",
-        views: "101",
-        tags: "test1 test2",
-        id: "1",
-        link: "www.baidu.com"
-      }
     ]
   },
   computed: {
-
+    getPage: function (page, pageSize) {
+      return function (page, pageSize) {
+        axios({
+          methods: 'get',
+          url: '/queryBlogByPage?page=' + (page - 1) + "&pageSize=" + pageSize
+        }).then((function (res) {
+          var result = res.data.data
+          var list = []
+          for (var i = 0; i < result.length; i++) {
+            var temp = {}
+            temp.title = result[i].title
+            temp.content = result[i].content
+            temp.date = result[i].date
+            temp.views = result[i].views
+            temp.tags = result[i].tags
+            temp.id = result[i].id
+            temp.link = "" + result[i].link
+            list.push(temp)
+          }
+          articleList.articleList = list
+        })).catch(function (err) {
+          console.log("请求失败");
+        })
+      }
+    }
   },
-  created:{
-
+  created: function () {
+    this.getPage(this.page, this.pageSize)
   }
 })
