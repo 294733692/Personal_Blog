@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/index.css">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="./js/axios.js"></script>
 </head>
 <body>
   <header class="header">
@@ -28,7 +29,6 @@
       <div class="every_day" id="every_day">
         <span>每日一句</span>
         <p v-html="getContent"></p>
-        <p>你们必须努力寻找自己的声音，因为你越迟开始寻找,找到的可能性就越小 -----余云超</p>
       </div>
       <div class="article_list" id="article_list">
         <div class="article" v-for="article in articleList">

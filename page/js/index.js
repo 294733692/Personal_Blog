@@ -8,8 +8,16 @@ var everyDay = new Vue({
       return this.content
     }
   },
-  created: {
+  created: function () {
     //  请求数据、给content赋值
+    axios({
+      methods: "get",
+      url: "/queryEveryDay"
+    }).then(function(res) {
+      everyDay.content = res.data.data[0].content
+    }).catch(function(error){
+      console.log("请求失败");
+    })
   }
 })
 
