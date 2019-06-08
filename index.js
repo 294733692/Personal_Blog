@@ -13,6 +13,7 @@ app.post("/editBlog", loader.get("/editBlog"))
 app.get("/queryBlogByPage", loader.get("/queryBlogByPage"))
 
 app.get("/queryBlogCount", loader.get("/queryBlogCount"))
+app.get("/queryBlogById", loader.get("/queryBlogById"))
 
 app.listen(globalConfig.port, function () {
   console.log("服务已启动");
