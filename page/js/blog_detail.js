@@ -39,3 +39,55 @@ var blogDetail = new Vue({
     });
   }
 })
+
+var sendComment = new Vue({
+  el: "#send_comment",
+  data: {
+    vcode: "",
+    rightCode: ""
+  },
+  computed: {
+    changeCode: function() {
+      return function () {
+        axios({
+          method: "get",
+          url: "/queryRandomCode"
+        }).then(function (resp) {
+          console.log(resp);
+          sendComment.vcode = resp.data.data.data;
+          sendComment.rightCode = resp.data.data.text;
+        });
+      }
+    },
+    sendComment: function () {
+      return function () {
+        var searcheUrlParams = location.search.indexOf("?") > -1 ? location.search.split("?")[1].split("&") : "";
+        var bid = -10;
+
+        for (var i = 0 ; i < searcheUrlParams.length ; i ++) {
+          if (searcheUrlParams[i].split("=")[0] == "bid") {
+            try {
+              bid = parseInt(searcheUrlParams[i].split("=")[1]);
+            }catch (e) {
+              console.log(e);
+            }
+          }
+        }
+        var reply = document.getElementById("comment_reply").value;
+        // var replyName = document.getElementById("comment_reply_name").value;
+        var name = document.getElementById("comment_name").value;
+        var email = document.getElementById("comment_email").value;
+        var content = document.getElementById("comment_content").value;
+        axios({
+          method: "get",
+          url: "/addComment?bid=" + bid + "&parent=" + reply + "&userName=" + name + "&email=" + email + "&content=" + content
+        }).then(function (resp) {
+          alert(resp.data.msg);
+        });
+      }
+    }
+  },
+  created: function () {
+    // this.changeCode();
+  }
+});
