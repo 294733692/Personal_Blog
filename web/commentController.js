@@ -3,6 +3,7 @@ var tagsDao = require("../dao/TagsDao");
 var commentDao = require("../dao/CommentDao");
 var timeUtil = require("../util/TimeUtil");
 var respUtil = require("../util/RespUtil");
+var captcha = require("svg-captcha");
 var url = require("url");
 
 var path = new Map();
@@ -17,5 +18,13 @@ function addComment(request, response) {
   })
 }
 path.set("/addComment", addComment);
+
+function queryRandomCode(request, response){
+  var img = captcha.create({fontSize: 50, width: 100, height: 34})
+  response.writeHead(200);
+  response.write(respUtil.writeResult("success", "验证码查询成功", img));
+  response.end();
+}
+path.set("/queryRandomCode", queryRandomCode);
 
 module.exports.path = path;

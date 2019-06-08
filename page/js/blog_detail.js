@@ -55,14 +55,21 @@ var sendComment = new Vue({
         }).then(function (resp) {
           console.log(resp);
           sendComment.vcode = resp.data.data.data;
-          sendComment.rightCode = resp.data.data.text;
+          sendComment.rightCode = resp.data.data.text.toLowerCase();
         });
       }
     },
     sendComment: function () {
       return function () {
+        var code = document.getElementById("comment_code").value
         var searcheUrlParams = location.search.indexOf("?") > -1 ? location.search.split("?")[1].split("&") : "";
         var bid = -10;
+
+        if( code != sendComment.rightCode){
+          alert("验证码错误，请重新输入")
+          sendComment.changeCode()
+          return
+        }
 
         for (var i = 0 ; i < searcheUrlParams.length ; i ++) {
           if (searcheUrlParams[i].split("=")[0] == "bid") {
@@ -88,6 +95,6 @@ var sendComment = new Vue({
     }
   },
   created: function () {
-    // this.changeCode();
+    this.changeCode();
   }
 });

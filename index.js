@@ -18,6 +18,8 @@ app.get("/queryBlogById", loader.get("/queryBlogById"))
 app.get("/queryBlogById", loader.get("/queryBlogById"))
 app.get("/addComment", loader.get("/addComment"))
 
+app.get("/queryRandomCode", loader.get("/queryRandomCode"))
+
 app.listen(globalConfig.port, function () {
   console.log("服务已启动");
 })
