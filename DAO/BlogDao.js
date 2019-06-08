@@ -30,6 +30,23 @@ function queryBlogByPage(page, pageSize, success) {
   });
   connection.end();
 }
+// 查询blog条数
+function queryBlogCount(success) {
+  var querySql = "select count(1) as count from blog;";
+  var params = [];
+
+  var connection = dbutil.createConnection();
+  connection.connect();
+  connection.query(querySql, params, function (error, result) {
+    if (error == null) {
+      success(result);
+    } else {
+      console.log(error);
+    }
+  });
+  connection.end();
+}
 
 module.exports.insertBlog = insertBlog
 module.exports.queryBlogByPage = queryBlogByPage
+module.exports.queryBlogCount = queryBlogCount

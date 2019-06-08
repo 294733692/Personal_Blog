@@ -6,6 +6,16 @@ var respUtil = require('../util/respUtil')
 var url = require("url")
 var path = new Map()
 
+//查询blog条数
+function queryBlogCount(request, response) {
+  blogDao.queryBlogCount(function(result){
+    response.writeHead(200, {"Content-Type": 'text/html'});
+    response.write(respUtil.writeResult("success", "查询成功", result));
+    response.end();
+  })
+}
+path.set("/queryBlogCount", queryBlogCount);
+
 // 查询blog文章
 function queryBlogByPage(request, response) {
   var params = url.parse(request.url, true).query;

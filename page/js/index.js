@@ -25,7 +25,7 @@ var articleList = new Vue({
   el: "#article_list",
   data: {
     page: 1,
-    pageSize: 5,
+    pageSize: 2,
     count: 100,
     pageNumList: [],
     articleList: [
@@ -61,9 +61,48 @@ var articleList = new Vue({
             list.push(temp)
           }
           articleList.articleList = list
+          articleList.page = page
         })).catch(function (err) {
           console.log("请求失败");
         })
+        axios({
+          methods: "get",
+          url: "/queryBlogCount"
+        }).then(function (res) {
+          articleList.count = res.data.data[0].count
+          articleList.generatePageTool
+        }).catch(function (err) {
+          console.log("系统异常");
+        })
+      }
+    },
+    // 翻页
+    generatePageTool: function () {
+      var nowPage = this.page
+      var pageSize = this.pageSize
+      var totalCount = this.count
+      var result = []
+      result.push({text: "<<", page: nowPage})
+      if (nowPage > 2) {
+        result.push({text: nowPage - 2, page: nowPage - 2})
+      }
+      if (nowPage > 1) {
+        result.push({text: nowPage - 1, page: nowPage - 1})
+      }
+      result.push({text: nowPage, page: nowPage})
+      if (nowPage + 1 <= (totalCount + pageSize - 1) / pageSize) {
+        result.push({text: nowPage + 1, page: nowPage + 1})
+      }
+      if (nowPage + 2 <= (totalCount + pageSize - 2) / pageSize) {
+        result.push({text: nowPage + 2, page: nowPage + 2})
+      }
+      result.push({text: ">>", page: parseInt((totalCount + pageSize - 2) / pageSize)})
+      this.pageNumList = result
+      return result
+    },
+    jumpTo() {
+      return function (page) {
+        this.getPage(page, this.pageSize)
       }
     }
   },
