@@ -37,47 +37,6 @@ var newHot = new Vue({
   el: "#new_hot",
   data:{
     titleList: []
-  }
-})
-
-var newComments = new Vue({
-  el: "#new_comments",
-  data: {
-    commentList:[
-      {
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },{
-        name: "这是用户名",
-        date: "2018-02-03",
-        comment: "抱歉、因为种种原因，不能实现外部站点链接"
-      },
-    ]
   },
   created: function () {
     axios({
@@ -95,3 +54,27 @@ var newComments = new Vue({
     });
   }
 })
+
+var newComments = new Vue({
+  el: "#new_comments",
+  data: {
+    commentList: []
+  },
+  created: function () {
+    axios({
+      method: "get",
+      url: "/queryNewComments"
+    }).then(function (resp) {
+      console.log(resp);
+      var result = [];
+      for (var i = 0 ; i < resp.data.data.length ; i ++) {
+        var temp = {};
+        temp.name = resp.data.data[i].user_name;
+        temp.date = resp.data.data[i].ctime;
+        temp.comment = resp.data.data[i].comments;
+        result.push(temp);
+      }
+      newComments.commentList = result;
+    });
+  }
+});
