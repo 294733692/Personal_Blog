@@ -1,4 +1,4 @@
-var dbutil = require("./DBUtil")
+var dbutil = require("./DBUtil");
 
 function insertTag(tag, ctime, utime, success) {
   var insertSql = "insert into tags (`tag`, `ctime`, `utime`) values (?, ?, ?)";
@@ -16,13 +16,12 @@ function insertTag(tag, ctime, utime, success) {
   connection.end();
 }
 
-function queryTag(tag, success) {
-  var querySql = "select * from tags where tag = ?";
+function queyrTag(tag, success) {
+  var insertSql = "select * from tags where tag = ?;";
   var params = [tag];
-
   var connection = dbutil.createConnection();
   connection.connect();
-  connection.query(querySql, params, function (error, result) {
+  connection.query(insertSql, params, function (error, result) {
     if (error == null) {
       success(result);
     } else {
@@ -32,5 +31,21 @@ function queryTag(tag, success) {
   connection.end();
 }
 
-module.exports.insertTag = insertTag
-module.exports.queryTag = queryTag
+function queyrAllTag(success) {
+  var insertSql = "select * from tags;";
+  var params = [];
+  var connection = dbutil.createConnection();
+  connection.connect();
+  connection.query(insertSql, params, function (error, result) {
+    if (error == null) {
+      success(result);
+    } else {
+      console.log(error);
+    }
+  });
+  connection.end();
+}
+
+module.exports.insertTag = insertTag;
+module.exports.queyrTag = queyrTag;
+module.exports.queyrAllTag = queyrAllTag;
