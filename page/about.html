@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>个人博客</title>
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/about.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="./js/axios.js"></script>
 </head>
 <body>
 <header class="header">
@@ -26,10 +28,11 @@
   <div class="content_left">
     <div class="description">
       <div class="about_title">关于我</div>
-      <p>按时打卡岁的卢卡斯年代开始</p>
-      <p>按时打卡岁的卢卡斯年代开始</p>
-      <p>按时打卡岁的卢卡斯年代开始</p>
-      <p>按时打卡岁的卢卡斯年代开始</p>
+      <p>asdasdasdasdasdads</p>
+      <p>asdasdasdasdasdads</p>
+      <p>asdasdasdasdasdads</p>
+      <p>asdasdasdasdasdads</p>
+      <p>asdasdasdasdasdads</p>
 
       <div class="about_title">关于博客</div>
       <p>asdasdasdasdasdads</p>
@@ -39,12 +42,13 @@
       <p>asdasdasdasdasdads</p>
     </div>
     <div class="blog_comments" id="blog_comments">
-      <span class="blog_comments_msg">当前文章:356条留言</span>
-      <div class="blog_comment">
-        <span><b>文章用户名称</b>options发布于2018.3.24 <a style="cursor: pointer">[回复]</a></span>
-        <div>阔妮基瓦</div>
+      <span class="blog_comments_msg">当前文章：{{total}} 条留言</span>
+      <div class="blog_comment" v-for="comment in comments">
+        <span><b>{{comment.user_name}}</b>：{{comment.options}} 发表于 {{comment.ctime}} <a style="cursor: pointer" v-on:click="reply(comment.id, comment.user_name)">[回复]</a></span>
+        <div>{{comment.comments}}</div>
       </div>
     </div>
+
     <div class="send_comment" id="send_comment">
       <span>发表评论</span>
       <div>
@@ -58,60 +62,33 @@
       </div>
       <div>
         <input type="text" placeholder="验证码" id="comment_code">
-        <span>这里是验证码</span>
+        <span v-html="vcode" v-on:click="changeCode()"></span>
       </div>
-      <button>提交评论</button>
+      <button v-on:click="sendComment()">提交评论</button>
     </div>
   </div>
   <div class="content_right">
     <div class="right_moodule" id="random_tags">
       <div>随机标签云</div>
-      <a href="/">css</a>
-      <a href="/">html</a>
-      <a href="/">Node</a>
-      <a href="/">Vue</a>
-      <a href="/">webpack</a>
+      <a v-for="tag in tags" v-bind:style="{color:randomColor(), fontSize:randomSize()}" v-bind:href="tag.link">{{tag.text}}</a>
     </div>
     <div class="right_moodule" id="new_hot">
       <div>最近热门</div>
       <ul>
-        <li>
-          <a href="/">你们必须努力寻找自己的声音</a>
-        </li>
-        <li>
-          <a href="/">你们必须努力寻找自己的声音</a>
-        </li>
-        <li>
-          <a href="/">你们必须努力寻找自己的声音</a>
-        </li>
-        <li>
-          <a href="/">你们必须努力寻找自己的声音</a>
+        <li v-for="temp in titleList">
+          <a v-bind:href="temp.link">{{temp.title}}</a>
         </li>
       </ul>
     </div>
     <div class="right_moodule" id="new_comments">
       <div>最新评论</div>
       <ul>
-        <li>
+        <li v-for="comment in commentList">
           <div>
-            <span>这里是用户名</span>
-            <span class="pull_right">这里是时间</span>
+            <span>{{comment.name}}</span>
+            <span class="pull_right">{{comment.date}}</span>
           </div>
-          <p>抱歉、因为种种原因，不能实现外部站点链接</p>
-        </li>
-        <li>
-          <div>
-            <span>这里是用户名</span>
-            <span class="pull_right">这里是时间</span>
-          </div>
-          <p>抱歉、因为种种原因，不能实现外部站点链接</p>
-        </li>
-        <li>
-          <div>
-            <span>这里是用户名</span>
-            <span class="pull_right">这里是时间</span>
-          </div>
-          <p>抱歉、因为种种原因，不能实现外部站点链接</p>
+          <p>{{comment.comment}}</p>
         </li>
       </ul>
     </div>
@@ -130,14 +107,19 @@
     <li>C/C++</li>
     <li>CSS/DIV</li>
     <li>java</li>
-    <li>NodeJS</li>
-    <li>webpack</li>
-    <li>redis</li>
-    <li>MongoDB</li>
-    <li>linux</li>
-    <li>React</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
+    <li>C/C++</li>
   </ul>
-  <p>Copyright © 2010-2017 版权所有</p>
+  <p>Copyright © 2010-2017 巴拉巴拉的</p>
 </footer>
+<script src="./js/about.js"></script>
+<script src="./js/base.js"></script>
 </body>
 </html>
