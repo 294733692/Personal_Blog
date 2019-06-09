@@ -41,39 +41,82 @@ var articleList = new Vue({
     ]
   },
   computed: {
-    getPage: function (page, pageSize) {
+    getPage: function() {
       return function (page, pageSize) {
-        axios({
-          methods: 'get',
-          url: '/queryBlogByPage?page=' + (page - 1) + "&pageSize=" + pageSize
-        }).then((function (res) {
-          var result = res.data.data
-          var list = []
-          for (var i = 0; i < result.length; i++) {
-            var temp = {}
-            temp.title = result[i].title
-            temp.content = result[i].content
-            temp.date = result[i].date
-            temp.views = result[i].views
-            temp.tags = result[i].tags
-            temp.id = result[i].id
-            temp.link = "/blog_detail.html?bid=" + result[i].id
-            list.push(temp)
+        var searcheUrlParams = location.search.indexOf("?") > -1 ? location.search.split("?")[1].split("&") : "";
+        var tag = "";
+        for (var i = 0 ; i < searcheUrlParams.length ; i ++) {
+          if (searcheUrlParams[i].split("=")[0] == "tag") {
+            try {
+              tag = searcheUrlParams[i].split("=")[1];
+            }catch (e) {
+              console.log(e);
+            }
           }
-          articleList.articleList = list
-          articleList.page = page
-        })).catch(function (err) {
-          console.log("请求失败");
-        })
-        axios({
-          methods: "get",
-          url: "/queryBlogCount"
-        }).then(function (res) {
-          articleList.count = res.data.data[0].count
-          articleList.generatePageTool
-        }).catch(function (err) {
-          console.log("系统异常");
-        })
+        }
+        if (tag == "") {//不是查询情况
+          axios({
+            method: "get",
+            url: "/queryBlogByPage?page=" + (page - 1) + "&pageSize=" + pageSize
+          }).then(function(resp) {
+            var result = resp.data.data;
+            var list = [];
+            for (var i = 0 ; i < result.length ; i ++) {
+              var temp = {};
+              temp.title = result[i].title;
+              temp.content = result[i].content;
+              temp.date = result[i].ctime;
+              temp.views = result[i].views;
+              temp.tags = result[i].tags;
+              temp.id = result[i].id;
+              temp.link = "/blog_detail.html?bid=" + result[i].id;
+              list.push(temp);
+            }
+            articleList.articleList = list;
+            articleList.page = page;
+          }).catch(function (resp) {
+            console.log("请求错误");
+          });
+          axios({
+            method: "get",
+            url: "/queryBlogCount"
+          }).then(function(resp) {
+            articleList.count = resp.data.data[0].count;
+            articleList.generatePageTool;
+          });
+        } else {
+          axios({
+            method: "get",
+            url: "/queryByTag?page=" + (page - 1) + "&pageSize=" + pageSize + "&tag=" + tag
+          }).then(function(resp) {
+            var result = resp.data.data;
+            var list = [];
+            for (var i = 0 ; i < result.length ; i ++) {
+              var temp = {};
+              temp.title = result[i].title;
+              temp.content = result[i].content;
+              temp.date = result[i].ctime;
+              temp.views = result[i].views;
+              temp.tags = result[i].tags;
+              temp.id = result[i].id;
+              temp.link = "/blog_detail.html?bid=" + result[i].id;
+              list.push(temp);
+            }
+            articleList.articleList = list;
+            articleList.page = page;
+          }).catch(function (resp) {
+            console.log("请求错误");
+          });
+
+          axios({
+            method: "get",
+            url: "/queryByTagCount?tag=" + tag
+          }).then(function(resp) {
+            articleList.count = resp.data.data[0].count;
+            articleList.generatePageTool;
+          });
+        }
+
       }
     },
     // 翻页

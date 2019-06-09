@@ -26,7 +26,7 @@ var randomTags = new Vue({
     }).then(function (resp) {
       var result = [];
       for (var i = 0 ; i < resp.data.data.length ; i ++) {
-        result.push(resp.data.data[i].tag);
+        result.push({text:resp.data.data[i].tag, link:"/?tag=" + resp.data.data[i].tag});
       }
       randomTags.tags = result;
     });

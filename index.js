@@ -27,6 +27,9 @@ app.get("/queryRandomTags", loader.get("/queryRandomTags"));
 app.get("/queryHotBlog", loader.get("/queryHotBlog"));
 app.get("/queryNewComments", loader.get("/queryNewComments"));
 
+app.get("/queryByTag", loader.get("/queryByTag"));
+app.get("/queryByTagCount", loader.get("/queryByTagCount"));
+
 app.listen(globalConfig.port, function () {
   console.log("服务已启动");
 })
