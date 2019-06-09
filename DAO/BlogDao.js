@@ -112,8 +112,12 @@ function queryHotBlog(size, success) {
   connection.end();
 }
 
+
+
 module.exports.insertBlog = insertBlog
 module.exports.queryBlogByPage = queryBlogByPage
 module.exports.queryBlogCount = queryBlogCount
 module.exports.queryBlogById = queryBlogById
 module.exports.queryAllBlog = queryAllBlog
+module.exports.addViews = addViews
+module.exports.queryHotBlog = queryHotBlog

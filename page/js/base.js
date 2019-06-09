@@ -1,7 +1,7 @@
 var randomTags = new Vue({
   el: "#random_tags",
   data: {
-    tags: ["HTML", "CSS", "JAVASCRITP", "CSS3", "HTML5", "MONOGODB", "REDIS", "VUE", "REACT", "WEBPACK", "GULP", "LUINX", "GITHUB", "GIELAB", "HTML", "CSS", "JAVASCRITP", "CSS3", "HTML5", "MONOGODB", "REDIS", "VUE", "REACT", "WEBPACK", "GULP", "LUINX", "GITHUB", "GIELAB"],
+    tags: [],
   },
   computed: {
     randomColor: function () {
@@ -26,7 +26,7 @@ var randomTags = new Vue({
     }).then(function (resp) {
       var result = [];
       for (var i = 0 ; i < resp.data.data.length ; i ++) {
-        result.push({text:resp.data.data[i].tag, link:"/?tag=" + resp.data.data[i].tag});
+        result.push(resp.data.data[i].tag);
       }
       randomTags.tags = result;
     });
@@ -36,37 +36,7 @@ var randomTags = new Vue({
 var newHot = new Vue({
   el: "#new_hot",
   data:{
-    titleList: [
-      {
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },
-      {
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      },{
-        title: "这是一个链接",
-        link: "http://www.baidu.com"
-      }
-    ]
+    titleList: []
   }
 })
 
@@ -108,5 +78,20 @@ var newComments = new Vue({
         comment: "抱歉、因为种种原因，不能实现外部站点链接"
       },
     ]
+  },
+  created: function () {
+    axios({
+      method: "get",
+      url: "/queryHotBlog"
+    }).then(function (resp) {
+      var result = [];
+      for (var i = 0 ; i < resp.data.data.length ; i ++) {
+        var temp = {};
+        temp.title = resp.data.data[i].title;
+        temp.link = "/blog_detail.html?bid=" + resp.data.data[i].id;
+        result.push(temp);
+      }
+      newHot.titleList = result;
+    });
   }
 })

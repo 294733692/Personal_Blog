@@ -6,6 +6,15 @@ var respUtil = require('../util/respUtil')
 var url = require("url")
 var path = new Map()
 
+// 查询热门blog
+function queryHotBlog(request, response) {
+  blogDao.queryHotBlog(5, function (result) {
+    response.writeHead(200);
+    response.write(respUtil.writeResult("success", "查询成功", result));
+    response.end();
+  });
+}
+path.set("/queryHotBlog", queryHotBlog);
 // 查询所有blog
 function queryAllBlog(request, response) {
   blogDao.queryAllBlog(function (result) {
@@ -23,6 +32,9 @@ function queryBlogById(request, response) {
     response.writeHead(200, {"Content-Type": 'text/html'});
     response.write(respUtil.writeResult("success", "查询成功", result));
     response.end();
+    blogDao.addViews(parseInt(params.bid), function (result) {
+      console.log(result);
+    })
   })
 }
 path.set("/queryBlogById", queryBlogById);
