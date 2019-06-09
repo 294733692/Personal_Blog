@@ -20,8 +20,10 @@ app.get("/addComment", loader.get("/addComment"))
 
 app.get("/queryRandomCode", loader.get("/queryRandomCode"))
 app.get("/queryCommentsByBlogId", loader.get("/queryCommentsByBlogId"))
-
 app.get("/queryCommentsCountByBlogId", loader.get("/queryCommentsCountByBlogId"))
+
+app.get("/queryAllBlog", loader.get("/queryAllBlog"));
+// app.get("/queryRandomTags", loader.get("/queryRandomTags"));
 
 app.listen(globalConfig.port, function () {
   console.log("服务已启动");
